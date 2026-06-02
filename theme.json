@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": true,
+    "layout": {
+      "contentSize": "1140px",
+      "wideSize": "1320px"
+    },
+    "color": {
+      "custom": true,
+      "customGradient": true,
+      "defaultPalette": false,
+      "palette": [
+        { "slug": "navy", "color": "#143a64", "name": "Brand Navy" },
+        { "slug": "navy-deep", "color": "#0d2944", "name": "Deep Navy" },
+        { "slug": "navy-light", "color": "#1f4f80", "name": "Light Navy" },
+        { "slug": "orange", "color": "#e1731b", "name": "Brand Orange" },
+        { "slug": "orange-light", "color": "#f0913f", "name": "Light Orange" },
+        { "slug": "orange-pale", "color": "#fbe7d3", "name": "Pale Orange" },
+        { "slug": "ivory", "color": "#f7f5f1", "name": "Ivory" },
+        { "slug": "cream", "color": "#eef1f5", "name": "Cool Cream" },
+        { "slug": "charcoal", "color": "#1e2a36", "name": "Charcoal" },
+        { "slug": "muted", "color": "#5f6b78", "name": "Muted" },
+        { "slug": "white", "color": "#ffffff", "name": "White" }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        {
+          "fontFamily": "\"Poppins\", system-ui, sans-serif",
+          "slug": "heading",
+          "name": "Poppins"
+        },
+        {
+          "fontFamily": "\"Inter\", system-ui, sans-serif",
+          "slug": "body",
+          "name": "Inter"
+        }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "medium", "size": "1.125rem", "name": "Medium" },
+        { "slug": "large", "size": "1.5rem", "name": "Large" },
+        { "slug": "x-large", "size": "2.25rem", "name": "Extra Large" },
+        { "slug": "xx-large", "size": "clamp(2.5rem, 5vw, 4rem)", "name": "Display" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "em", "rem", "vh", "vw", "%"]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#f7f5f1",
+      "text": "#1e2a36"
+    },
+    "typography": {
+      "fontFamily": "\"Inter\", system-ui, sans-serif",
+      "lineHeight": "1.7"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "\"Poppins\", system-ui, sans-serif",
+          "fontWeight": "700"
+        }
+      },
+      "link": {
+        "color": { "text": "#e1731b" }
+      }
+    }
+  }
+}

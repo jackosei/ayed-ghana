@@ -1,0 +1,33 @@
+/*
+Theme Name:        AYED Ghana
+Theme URI:         https://ayedghana.com
+Author:            AYED Ghana
+Author URI:        https://ayedghana.com
+Description:       A bespoke, SEO-optimised and fully responsive WordPress theme for African Youth Empowerment and Development Ghana, a non-profit organisation. Brand colours are drawn from the official AYED logo (navy blue and orange). Content is managed through Secure Custom Fields.
+Version:           1.0.0
+Requires at least: 6.4
+Tested up to:      7.0
+Requires PHP:      7.4
+License:           GNU General Public License v2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:       ayed-ghana
+Tags:              non-profit, custom-colors, custom-menu, custom-logo, featured-images, translation-ready, responsive
+*/
+
+/*
+ * The full stylesheet lives in assets/css/main.css and is enqueued from
+ * inc/enqueue.php. This file exists to provide the required theme header
+ * and a small set of safe fallbacks should the main stylesheet fail to load.
+ */
+
+:root {
+  --ayed-navy: #143a64;
+  --ayed-orange: #e1731b;
+  --ayed-ivory: #f7f5f1;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1e2a36;
+  background: var(--ayed-ivory);
+}
