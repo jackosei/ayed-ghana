@@ -112,17 +112,35 @@ function ayed_social_links( $class = 'social-links' ) {
  * @param bool $inverse Use light text for dark backgrounds.
  */
 function ayed_brand( $inverse = false ) {
-	$class = $inverse ? 'brand brand--inverse' : 'brand';
-	if ( has_custom_logo() ) {
-		echo '<div class="' . esc_attr( $class ) . ' brand--image">';
-		the_custom_logo();
-		echo '</div>';
-		return;
+	$class      = $inverse ? 'brand brand--inverse' : 'brand';
+	$home       = esc_url( home_url( '/' ) );
+	$show_title = (bool) ayed_setting( 'show_site_title', true );
+
+	$wordmark = '<span class="brand__text"><span class="brand__mark">AYED</span><span class="brand__sep">Ghana</span></span>';
+
+	$logo_id = (int) get_theme_mod( 'custom_logo' );
+	if ( $logo_id ) {
+		$logo = wp_get_attachment_image( $logo_id, 'full', false, array(
+			'class' => 'brand__logo',
+			'alt'   => get_bloginfo( 'name' ),
+		) );
+		if ( $logo ) {
+			printf(
+				'<a class="%1$s brand--with-logo" href="%2$s" rel="home">%3$s%4$s</a>',
+				esc_attr( $class ),
+				$home,
+				$logo, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image returns safe markup.
+				$show_title ? $wordmark : '' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static trusted markup.
+			);
+			return;
+		}
 	}
+
 	printf(
-		'<a class="%1$s" href="%2$s" rel="home"><span class="brand__mark">AYED</span><span class="brand__sep">Ghana</span></a>',
+		'<a class="%1$s" href="%2$s" rel="home">%3$s</a>',
 		esc_attr( $class ),
-		esc_url( home_url( '/' ) )
+		$home,
+		$wordmark // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static trusted markup.
 	);
 }
 
@@ -219,7 +237,6 @@ function ayed_fallback_nav_items() {
 		$items[] = array( 'url' => get_permalink( $news ), 'label' => get_the_title( $news ) );
 	}
 
-	$items[] = array( 'url' => is_front_page() ? '#involved' : home_url( '/#involved' ), 'label' => __( 'Get Involved', 'ayed-ghana' ) );
 	$items[] = array( 'url' => ayed_contact_url(), 'label' => __( 'Contact', 'ayed-ghana' ) );
 
 	// Drop any items whose URL could not be resolved.

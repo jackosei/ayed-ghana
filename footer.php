@@ -37,17 +37,7 @@ $ayed_address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
 				) );
 			} else {
 				echo '<ul class="site-footer__menu">';
-				$ayed_footer_links = array(
-					array( 'url' => is_front_page() ? '#about' : home_url( '/#about' ), 'label' => __( 'About', 'ayed-ghana' ) ),
-					array( 'url' => get_post_type_archive_link( 'program' ), 'label' => __( 'Programs', 'ayed-ghana' ) ),
-					array( 'url' => get_post_type_archive_link( 'event' ), 'label' => __( 'Events', 'ayed-ghana' ) ),
-					array( 'url' => is_front_page() ? '#involved' : home_url( '/#involved' ), 'label' => __( 'Get Involved', 'ayed-ghana' ) ),
-					array( 'url' => ayed_contact_url(), 'label' => __( 'Contact', 'ayed-ghana' ) ),
-				);
-				foreach ( $ayed_footer_links as $ayed_link ) {
-					if ( empty( $ayed_link['url'] ) ) {
-						continue;
-					}
+				foreach ( ayed_fallback_nav_items() as $ayed_link ) {
 					printf( '<li><a href="%s">%s</a></li>', esc_url( $ayed_link['url'] ), esc_html( $ayed_link['label'] ) );
 				}
 				echo '</ul>';

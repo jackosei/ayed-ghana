@@ -81,6 +81,7 @@ function ayed_register_field_groups() {
 			array( 'key' => 'tab_general', 'label' => __( 'General', 'ayed-ghana' ), 'type' => 'tab' ),
 			array( 'key' => 'field_org_tagline', 'label' => __( 'Organisation Tagline', 'ayed-ghana' ), 'name' => 'org_tagline', 'type' => 'text', 'default_value' => 'African Youth Empowerment and Development', 'wrapper' => array( 'width' => 60 ) ),
 			array( 'key' => 'field_founded_year', 'label' => __( 'Year Founded', 'ayed-ghana' ), 'name' => 'founded_year', 'type' => 'text', 'default_value' => '2017', 'wrapper' => array( 'width' => 40 ) ),
+			array( 'key' => 'field_show_site_title', 'label' => __( 'Show site name beside logo', 'ayed-ghana' ), 'name' => 'show_site_title', 'type' => 'true_false', 'ui' => 1, 'default_value' => 1, 'instructions' => __( 'When a logo is uploaded, show the "AYED Ghana" wordmark next to it. Turn off to show the logo alone.', 'ayed-ghana' ) ),
 
 			array( 'key' => 'tab_contact', 'label' => __( 'Contact', 'ayed-ghana' ), 'type' => 'tab' ),
 			array( 'key' => 'field_contact_email', 'label' => __( 'Email Address', 'ayed-ghana' ), 'name' => 'contact_email', 'type' => 'email', 'default_value' => 'info@ayedghana.com', 'wrapper' => array( 'width' => 50 ) ),

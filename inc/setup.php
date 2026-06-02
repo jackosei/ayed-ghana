@@ -154,6 +154,35 @@ function ayed_maybe_flush_rewrites() {
 add_action( 'init', 'ayed_maybe_flush_rewrites', 99 );
 
 /**
+ * Create the dedicated Contact page once, assigned to the Contact template,
+ * so the navigation link always resolves to a real page.
+ */
+function ayed_install_pages() {
+	if ( get_option( 'ayed_pages_installed' ) ) {
+		return;
+	}
+
+	$contact = get_page_by_path( 'contact' );
+	if ( ! $contact ) {
+		$contact_id = wp_insert_post( array(
+			'post_title'   => __( 'Contact', 'ayed-ghana' ),
+			'post_name'    => 'contact',
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+			'post_content' => '',
+		) );
+		if ( $contact_id && ! is_wp_error( $contact_id ) ) {
+			update_post_meta( $contact_id, '_wp_page_template', 'template-contact.php' );
+		}
+	} elseif ( '' === (string) get_post_meta( $contact->ID, '_wp_page_template', true ) || 'default' === (string) get_post_meta( $contact->ID, '_wp_page_template', true ) ) {
+		update_post_meta( $contact->ID, '_wp_page_template', 'template-contact.php' );
+	}
+
+	update_option( 'ayed_pages_installed', 1 );
+}
+add_action( 'init', 'ayed_install_pages', 100 );
+
+/**
  * Pagination and ordering defaults for the custom archives.
  */
 function ayed_programs_archive_query( $query ) {
