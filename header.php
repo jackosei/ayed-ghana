@@ -41,17 +41,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 				) );
 			} else {
 				echo '<ul class="site-nav__menu">';
-				$defaults = array(
-					'#about'    => __( 'About', 'ayed-ghana' ),
-					'#mission'  => __( 'Mission', 'ayed-ghana' ),
-					'#pillars'  => __( 'Services', 'ayed-ghana' ),
-					'#programs' => __( 'Programs', 'ayed-ghana' ),
-					'#involved' => __( 'Get Involved', 'ayed-ghana' ),
-					'#contact'  => __( 'Contact', 'ayed-ghana' ),
-				);
-				foreach ( $defaults as $href => $label ) {
-					$url = is_front_page() ? $href : home_url( '/' ) . $href;
-					printf( '<li><a href="%s">%s</a></li>', esc_url( $url ), esc_html( $label ) );
+				foreach ( ayed_fallback_nav_items() as $ayed_item ) {
+					printf( '<li><a href="%s">%s</a></li>', esc_url( $ayed_item['url'] ), esc_html( $ayed_item['label'] ) );
 				}
 				echo '</ul>';
 			}
@@ -59,7 +50,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</nav>
 
 		<div class="site-header__cta">
-			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( is_front_page() ? '#involved' : home_url( '/#involved' ) ); ?>"><?php esc_html_e( 'Donate', 'ayed-ghana' ); ?></a>
+			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( is_front_page() ? '#involved' : home_url( '/#involved' ) ); ?>"><?php esc_html_e( 'Get Involved', 'ayed-ghana' ); ?></a>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'ayed-ghana' ); ?>" data-nav-toggle>
 				<?php ayed_icon( 'menu', array( 'size' => 26, 'class' => 'nav-toggle__open' ) ); ?>
 				<?php ayed_icon( 'close', array( 'size' => 26, 'class' => 'nav-toggle__close' ) ); ?>
@@ -79,9 +70,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 			) );
 		} else {
 			echo '<ul class="mobile-nav__menu">';
-			foreach ( $defaults as $href => $label ) {
-				$url = is_front_page() ? $href : home_url( '/' ) . $href;
-				printf( '<li><a href="%s">%s</a></li>', esc_url( $url ), esc_html( $label ) );
+			foreach ( ayed_fallback_nav_items() as $ayed_item ) {
+				printf( '<li><a href="%s">%s</a></li>', esc_url( $ayed_item['url'] ), esc_html( $ayed_item['label'] ) );
 			}
 			echo '</ul>';
 		}

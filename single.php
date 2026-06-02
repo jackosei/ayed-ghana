@@ -59,6 +59,32 @@ while ( have_posts() ) :
 	</article>
 
 	<?php
+	// Associated events for this program.
+	if ( $is_program ) :
+		$ayed_events = ayed_events_for_program( get_the_ID() );
+		if ( $ayed_events->have_posts() ) :
+			?>
+			<section class="section section--about related-events">
+				<div class="container">
+					<header class="section-head">
+						<?php ayed_eyebrow( __( 'In Action', 'ayed-ghana' ) ); ?>
+						<h2 class="section-title"><?php esc_html_e( 'Events from this Program', 'ayed-ghana' ); ?></h2>
+					</header>
+					<div class="events-grid">
+						<?php
+						while ( $ayed_events->have_posts() ) :
+							$ayed_events->the_post();
+							get_template_part( 'template-parts/content/event-card' );
+						endwhile;
+						wp_reset_postdata();
+						?>
+					</div>
+				</div>
+			</section>
+			<?php
+		endif;
+	endif;
+
 	if ( comments_open() || get_comments_number() ) {
 		echo '<div class="container container--narrow">';
 		comments_template();

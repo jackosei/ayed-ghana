@@ -38,14 +38,17 @@ $ayed_address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
 			} else {
 				echo '<ul class="site-footer__menu">';
 				$ayed_footer_links = array(
-					'#about'    => __( 'About', 'ayed-ghana' ),
-					'#programs' => __( 'Programs', 'ayed-ghana' ),
-					'#involved' => __( 'Get Involved', 'ayed-ghana' ),
-					'#contact'  => __( 'Contact', 'ayed-ghana' ),
+					array( 'url' => is_front_page() ? '#about' : home_url( '/#about' ), 'label' => __( 'About', 'ayed-ghana' ) ),
+					array( 'url' => get_post_type_archive_link( 'program' ), 'label' => __( 'Programs', 'ayed-ghana' ) ),
+					array( 'url' => get_post_type_archive_link( 'event' ), 'label' => __( 'Events', 'ayed-ghana' ) ),
+					array( 'url' => is_front_page() ? '#involved' : home_url( '/#involved' ), 'label' => __( 'Get Involved', 'ayed-ghana' ) ),
+					array( 'url' => ayed_contact_url(), 'label' => __( 'Contact', 'ayed-ghana' ) ),
 				);
-				foreach ( $ayed_footer_links as $href => $label ) {
-					$url = is_front_page() ? $href : home_url( '/' ) . $href;
-					printf( '<li><a href="%s">%s</a></li>', esc_url( $url ), esc_html( $label ) );
+				foreach ( $ayed_footer_links as $ayed_link ) {
+					if ( empty( $ayed_link['url'] ) ) {
+						continue;
+					}
+					printf( '<li><a href="%s">%s</a></li>', esc_url( $ayed_link['url'] ), esc_html( $ayed_link['label'] ) );
 				}
 				echo '</ul>';
 			}
@@ -67,11 +70,6 @@ $ayed_address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
 			</ul>
 		</div>
 
-		<?php if ( is_active_sidebar( 'footer-widgets' ) ) : ?>
-			<div class="site-footer__col site-footer__widgets">
-				<?php dynamic_sidebar( 'footer-widgets' ); ?>
-			</div>
-		<?php endif; ?>
 	</div>
 
 	<div class="site-footer__bar">

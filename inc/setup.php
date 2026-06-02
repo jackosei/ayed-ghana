@@ -60,23 +60,7 @@ function ayed_content_width() {
 add_action( 'after_setup_theme', 'ayed_content_width', 0 );
 
 /**
- * Register widget areas.
- */
-function ayed_widgets_init() {
-	register_sidebar( array(
-		'name'          => __( 'Footer Widgets', 'ayed-ghana' ),
-		'id'            => 'footer-widgets',
-		'description'   => __( 'Optional widgets shown in the footer.', 'ayed-ghana' ),
-		'before_widget' => '<div id="%1$s" class="footer-widget %2$s">',
-		'after_widget'  => '</div>',
-		'before_title'  => '<h4 class="footer-widget__title">',
-		'after_title'   => '</h4>',
-	) );
-}
-add_action( 'widgets_init', 'ayed_widgets_init' );
-
-/**
- * Custom post type: Programs.
+ * Custom post types: Programs and Events.
  */
 function ayed_register_post_types() {
 	$program_labels = array(
@@ -118,6 +102,33 @@ function ayed_register_post_types() {
 		'show_in_rest'      => true,
 		'rewrite'           => array( 'slug' => 'program-category' ),
 	) );
+
+	// Events: photo and video showcase of past events and projects.
+	$event_labels = array(
+		'name'               => __( 'Events', 'ayed-ghana' ),
+		'singular_name'      => __( 'Event', 'ayed-ghana' ),
+		'add_new'            => __( 'Add New', 'ayed-ghana' ),
+		'add_new_item'       => __( 'Add New Event', 'ayed-ghana' ),
+		'edit_item'          => __( 'Edit Event', 'ayed-ghana' ),
+		'new_item'           => __( 'New Event', 'ayed-ghana' ),
+		'view_item'          => __( 'View Event', 'ayed-ghana' ),
+		'search_items'       => __( 'Search Events', 'ayed-ghana' ),
+		'not_found'          => __( 'No events found', 'ayed-ghana' ),
+		'not_found_in_trash' => __( 'No events found in Trash', 'ayed-ghana' ),
+		'all_items'          => __( 'All Events', 'ayed-ghana' ),
+		'menu_name'          => __( 'Events', 'ayed-ghana' ),
+	);
+
+	register_post_type( 'event', array(
+		'labels'        => $event_labels,
+		'public'        => true,
+		'has_archive'   => true,
+		'menu_icon'     => 'dashicons-calendar-alt',
+		'menu_position' => 23,
+		'rewrite'       => array( 'slug' => 'events', 'with_front' => false ),
+		'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
+		'show_in_rest'  => true,
+	) );
 }
 add_action( 'init', 'ayed_register_post_types' );
 
@@ -131,7 +142,19 @@ function ayed_rewrite_flush() {
 add_action( 'after_switch_theme', 'ayed_rewrite_flush' );
 
 /**
- * Pagination defaults for the Programs archive.
+ * Flush rewrite rules once after a theme update introduces new post types,
+ * so custom URLs (such as Events) resolve without a manual permalink save.
+ */
+function ayed_maybe_flush_rewrites() {
+	if ( get_option( 'ayed_rewrite_version' ) !== AYED_VERSION ) {
+		flush_rewrite_rules( false );
+		update_option( 'ayed_rewrite_version', AYED_VERSION );
+	}
+}
+add_action( 'init', 'ayed_maybe_flush_rewrites', 99 );
+
+/**
+ * Pagination and ordering defaults for the custom archives.
  */
 function ayed_programs_archive_query( $query ) {
 	if ( is_admin() || ! $query->is_main_query() ) {
@@ -141,6 +164,11 @@ function ayed_programs_archive_query( $query ) {
 		$query->set( 'posts_per_page', 9 );
 		$query->set( 'orderby', 'menu_order date' );
 		$query->set( 'order', 'ASC' );
+	}
+	if ( $query->is_post_type_archive( 'event' ) ) {
+		$query->set( 'posts_per_page', 9 );
+		$query->set( 'meta_key', 'event_date' );
+		$query->set( 'orderby', array( 'meta_value_num' => 'DESC', 'date' => 'DESC' ) );
 	}
 }
 add_action( 'pre_get_posts', 'ayed_programs_archive_query' );

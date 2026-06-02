@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'AYED_VERSION' ) ) {
-	define( 'AYED_VERSION', '1.0.0' );
+	define( 'AYED_VERSION', '1.1.0' );
 }
 if ( ! defined( 'AYED_DIR' ) ) {
 	define( 'AYED_DIR', get_template_directory() );

@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
-$ayed_sections = array( 'hero', 'about', 'mission', 'pillars', 'approach', 'programs', 'involved', 'contact' );
+$ayed_sections = array( 'hero', 'about', 'mission', 'pillars', 'approach', 'programs', 'involved' );
 
 foreach ( $ayed_sections as $ayed_section ) {
 	get_template_part( 'template-parts/sections/' . $ayed_section );

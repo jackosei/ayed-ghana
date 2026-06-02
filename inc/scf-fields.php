@@ -192,12 +192,6 @@ function ayed_register_field_groups() {
 				array( 'key' => 'field_iv_link_url', 'label' => __( 'Link URL', 'ayed-ghana' ), 'name' => 'link_url', 'type' => 'text', 'wrapper' => array( 'width' => 20 ) ),
 				array( 'key' => 'field_iv_text', 'label' => __( 'Text', 'ayed-ghana' ), 'name' => 'text', 'type' => 'textarea', 'rows' => 3 ),
 			) ),
-
-			/* Contact */
-			array( 'key' => 'tab_contact_sec', 'label' => __( 'Contact', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
-			array( 'key' => 'field_contact_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'contact_tag', 'type' => 'text', 'default_value' => 'Reach Out', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_contact_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'contact_title', 'type' => 'text', 'default_value' => 'Let\'s Start a [em]Conversation[/em]', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_contact_intro', 'label' => __( 'Intro', 'ayed-ghana' ), 'name' => 'contact_intro', 'type' => 'textarea', 'rows' => 3, 'default_value' => 'Whether you want to learn more about our programmes, explore a partnership, or simply connect with our team, reach out and we will respond promptly.' ),
 		),
 	) );
 
@@ -226,7 +220,33 @@ function ayed_register_field_groups() {
 	) );
 
 	/* ---------------------------------------------------------------------
-	 * 4. Page subtitle (for interior pages).
+	 * 4. Event details (photos, videos, related programs).
+	 * ------------------------------------------------------------------- */
+	acf_add_local_field_group( array(
+		'key'      => 'group_ayed_event',
+		'title'    => __( 'Event Details', 'ayed-ghana' ),
+		'location' => array(
+			array(
+				array( 'param' => 'post_type', 'operator' => '==', 'value' => 'event' ),
+			),
+		),
+		'fields'   => array(
+			array( 'key' => 'field_event_date', 'label' => __( 'Event Date', 'ayed-ghana' ), 'name' => 'event_date', 'type' => 'date_picker', 'required' => 1, 'display_format' => 'j F Y', 'return_format' => 'Ymd', 'first_day' => 1, 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_event_location', 'label' => __( 'Location', 'ayed-ghana' ), 'name' => 'event_location', 'type' => 'text', 'placeholder' => 'Accra, Ghana', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_event_programs', 'label' => __( 'Related Programs', 'ayed-ghana' ), 'name' => 'related_programs', 'type' => 'relationship', 'post_type' => array( 'program' ), 'filters' => array( 'search' ), 'return_format' => 'id', 'instructions' => __( 'Link this event to one or more programs. Linked events appear on the program page.', 'ayed-ghana' ) ),
+			array( 'key' => 'field_event_gallery', 'label' => __( 'Photo Gallery', 'ayed-ghana' ), 'name' => 'event_gallery', 'type' => 'repeater', 'layout' => 'table', 'button_label' => __( 'Add Photo', 'ayed-ghana' ), 'sub_fields' => array(
+				array( 'key' => 'field_event_photo', 'label' => __( 'Image', 'ayed-ghana' ), 'name' => 'image', 'type' => 'image', 'return_format' => 'array', 'preview_size' => 'thumbnail' ),
+				array( 'key' => 'field_event_photo_caption', 'label' => __( 'Caption', 'ayed-ghana' ), 'name' => 'caption', 'type' => 'text' ),
+			) ),
+			array( 'key' => 'field_event_videos', 'label' => __( 'Videos', 'ayed-ghana' ), 'name' => 'event_videos', 'type' => 'repeater', 'layout' => 'table', 'button_label' => __( 'Add Video', 'ayed-ghana' ), 'instructions' => __( 'Paste a YouTube or Vimeo URL. It will be embedded responsively.', 'ayed-ghana' ), 'sub_fields' => array(
+				array( 'key' => 'field_event_video_url', 'label' => __( 'Video URL', 'ayed-ghana' ), 'name' => 'url', 'type' => 'url' ),
+				array( 'key' => 'field_event_video_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text' ),
+			) ),
+		),
+	) );
+
+	/* ---------------------------------------------------------------------
+	 * 5. Page subtitle (for interior pages).
 	 * ------------------------------------------------------------------- */
 	acf_add_local_field_group( array(
 		'key'      => 'group_ayed_page',

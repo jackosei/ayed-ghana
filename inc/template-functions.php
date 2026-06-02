@@ -165,6 +165,112 @@ function ayed_body_classes( $classes ) {
 add_filter( 'body_class', 'ayed_body_classes' );
 
 /**
+ * Resolve the URL of the dedicated Contact page.
+ *
+ * Looks for a page using the Contact template, then a page with the slug
+ * "contact". Falls back to a mailto link, then the home page.
+ *
+ * @return string
+ */
+function ayed_contact_url() {
+	static $url = null;
+	if ( null !== $url ) {
+		return $url;
+	}
+
+	$pages = get_posts( array(
+		'post_type'      => 'page',
+		'posts_per_page' => 1,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'meta_key'       => '_wp_page_template',
+		'meta_value'     => 'template-contact.php',
+	) );
+	if ( ! empty( $pages ) ) {
+		$url = get_permalink( $pages[0] );
+		return $url;
+	}
+
+	$page = get_page_by_path( 'contact' );
+	if ( $page ) {
+		$url = get_permalink( $page );
+		return $url;
+	}
+
+	$email = ayed_setting( 'contact_email', '' );
+	$url   = is_email( $email ) ? 'mailto:' . $email : home_url( '/' );
+	return $url;
+}
+
+/**
+ * Default navigation items used when no menu is assigned to the primary location.
+ *
+ * @return array List of items with 'url' and 'label'.
+ */
+function ayed_fallback_nav_items() {
+	$items = array(
+		array( 'url' => is_front_page() ? '#about' : home_url( '/#about' ), 'label' => __( 'About', 'ayed-ghana' ) ),
+		array( 'url' => get_post_type_archive_link( 'program' ), 'label' => __( 'Programs', 'ayed-ghana' ) ),
+		array( 'url' => get_post_type_archive_link( 'event' ), 'label' => __( 'Events', 'ayed-ghana' ) ),
+	);
+
+	$news = (int) get_option( 'page_for_posts' );
+	if ( $news ) {
+		$items[] = array( 'url' => get_permalink( $news ), 'label' => get_the_title( $news ) );
+	}
+
+	$items[] = array( 'url' => is_front_page() ? '#involved' : home_url( '/#involved' ), 'label' => __( 'Get Involved', 'ayed-ghana' ) );
+	$items[] = array( 'url' => ayed_contact_url(), 'label' => __( 'Contact', 'ayed-ghana' ) );
+
+	// Drop any items whose URL could not be resolved.
+	return array_values( array_filter( $items, static function ( $item ) {
+		return ! empty( $item['url'] );
+	} ) );
+}
+
+/**
+ * Query events associated with a given program via the related_programs field.
+ *
+ * @param int $program_id Program post ID.
+ * @return WP_Query
+ */
+function ayed_events_for_program( $program_id ) {
+	return new WP_Query( array(
+		'post_type'      => 'event',
+		'posts_per_page' => 6,
+		'no_found_rows'  => true,
+		'meta_key'       => 'event_date',
+		'orderby'        => array( 'meta_value_num' => 'DESC', 'date' => 'DESC' ),
+		'meta_query'     => array(
+			'relation' => 'AND',
+			array(
+				'key'     => 'related_programs',
+				'value'   => '"' . (int) $program_id . '"',
+				'compare' => 'LIKE',
+			),
+		),
+	) );
+}
+
+/**
+ * Format an event date stored by Secure Custom Fields (Ymd) for display.
+ *
+ * @param string $raw Raw date value (Ymd) or empty.
+ * @return string
+ */
+function ayed_format_event_date( $raw ) {
+	$raw = trim( (string) $raw );
+	if ( '' === $raw ) {
+		return '';
+	}
+	$timestamp = strtotime( $raw );
+	if ( ! $timestamp ) {
+		return $raw;
+	}
+	return date_i18n( get_option( 'date_format', 'j F Y' ), $timestamp );
+}
+
+/**
  * A reusable "read more" arrow link.
  *
  * @param string $url   URL.

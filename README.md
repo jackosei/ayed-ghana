@@ -22,14 +22,20 @@ The theme will not fatal if Secure Custom Fields is missing; it falls back to se
 6. Edit global details (contact info, social links, footer) under **Site Settings** in the admin sidebar.
 7. Edit homepage content under the **Front Page Content** panel on the homepage editor. Each section has its own tab.
 8. Add programmes under **Programs**. Feature specific ones on the homepage via the Programs tab.
+9. Create a **Contact page**: add a new page, set its Template (Page Attributes) to **Contact Page**, then add it to your menu. The form posts to a secure handler; submissions are emailed to the recipient set under Site Settings.
+10. Add **Events** under the Events menu. Each event supports a date, location, a photo gallery, videos (paste a YouTube or Vimeo URL), and one or more **Related Programs**. Linked events appear automatically on the related program's page.
+11. Create a **News page**: add a page named "News" (leave it blank), then under **Settings > Reading** set "Posts page" to it. Blog posts then list there using the theme's news layout, and the page is added to the default navigation automatically.
 
 ## Content management map
 
 | Area | Where to edit |
 | --- | --- |
 | Brand, contact, social, footer | Admin sidebar > **Site Settings** |
-| Homepage sections (hero, about, mission, pillars, approach, programs, get involved, contact) | Homepage editor > **Front Page Content** tabs |
+| Homepage sections (hero, about, mission, pillars, approach, programs, get involved) | Homepage editor > **Front Page Content** tabs |
 | Individual programmes | **Programs** post type, with a **Program Details** panel |
+| Events (photos, videos, related programs) | **Events** post type, with an **Event Details** panel |
+| Contact page | A page using the **Contact Page** template |
+| News / blog | Standard posts, listed on the page set as **Settings > Reading > Posts page** |
 | Interior page eyebrow / subtitle | Any page > **Page Header** panel |
 
 ### Highlighting words
@@ -44,8 +50,10 @@ ayed-ghana/
   theme.json           Editor palette and typography
   functions.php        Bootstrap, loads inc/ modules
   front-page.php       Homepage, composes template-parts/sections/*
+  template-contact.php Contact Page template (selectable per page)
   page.php single.php  Interior templates
   archive-program.php  Programs archive
+  single-event.php archive-event.php   Events (gallery, videos, related programs)
   index.php archive.php search.php 404.php searchform.php comments.php
   inc/
     setup.php          Theme supports, menus, Programs CPT and taxonomy
