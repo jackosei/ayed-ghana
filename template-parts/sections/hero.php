@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$badge        = ayed_field( 'hero_badge', "Established in Ghana. Empowering Ghana's Youth." );
+$badge        = ayed_field( 'hero_badge', "Established in Ghana. Empowering Africa's Youth." );
 $title        = ayed_field( 'hero_title', 'Empowering the [em]Next[/em] Generation of Africa' );
 $sub          = ayed_field( 'hero_sub', 'A platform where young people connect, grow and succeed, in business, industry, and beyond.' );
 $primary_lbl  = ayed_field( 'hero_primary_label', 'Our Programs' );
