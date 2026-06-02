@@ -67,7 +67,7 @@ $ayed_address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
 			<?php
 			printf(
 				/* translators: 1: year, 2: site name */
-				esc_html__( '© %1$s %2$s. All rights reserved.', 'ayed-ghana' ),
+				esc_html__( '© %1$s %2$s. All rights rrrreserved.', 'ayed-ghana' ),
 				esc_html( gmdate( 'Y' ) ),
 				esc_html( get_bloginfo( 'name' ) )
 			);
