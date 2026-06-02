@@ -36,7 +36,9 @@ function ayed_handle_contact() {
 	$first   = isset( $_POST['first_name'] ) ? sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) : '';
 	$last    = isset( $_POST['last_name'] ) ? sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) : '';
 	$email   = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
-	$interest = isset( $_POST['interest'] ) ? sanitize_text_field( wp_unslash( $_POST['interest'] ) ) : '';
+	$interest_slug = isset( $_POST['interest'] ) ? sanitize_key( wp_unslash( $_POST['interest'] ) ) : '';
+	$interests     = function_exists( 'ayed_contact_interests' ) ? ayed_contact_interests() : array();
+	$interest      = isset( $interests[ $interest_slug ] ) ? $interests[ $interest_slug ] : '';
 	$message = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
 
 	// Validate required fields.

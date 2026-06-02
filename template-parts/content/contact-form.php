@@ -27,14 +27,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<p class="form-field">
 		<label for="cf-interest"><?php esc_html_e( 'I am interested in', 'ayed-ghana' ); ?></label>
 		<span class="form-select">
+			<?php
+			// Preselect from the ?interest= query param (set by the Get Involved links).
+			$ayed_selected = isset( $_GET['interest'] ) ? sanitize_key( wp_unslash( $_GET['interest'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only UI preselection.
+			?>
 			<select id="cf-interest" name="interest">
 				<option value=""><?php esc_html_e( 'Select an option', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Volunteering', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Partnership', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Donating', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Learning more about programmes', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Media or press enquiry', 'ayed-ghana' ); ?></option>
-				<option><?php esc_html_e( 'Other', 'ayed-ghana' ); ?></option>
+				<?php foreach ( ayed_contact_interests() as $ayed_slug => $ayed_label ) : ?>
+					<option value="<?php echo esc_attr( $ayed_slug ); ?>" <?php selected( $ayed_selected, $ayed_slug ); ?>><?php echo esc_html( $ayed_label ); ?></option>
+				<?php endforeach; ?>
 			</select>
 			<?php ayed_icon( 'chevron', array( 'size' => 18, 'class' => 'form-select__icon' ) ); ?>
 		</span>

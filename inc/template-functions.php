@@ -221,6 +221,39 @@ function ayed_contact_url() {
 }
 
 /**
+ * Canonical list of contact form interests, keyed by slug.
+ *
+ * Used by the contact form select, the "Get Involved" links (for query-param
+ * preselection) and the email handler, so all three stay in sync.
+ *
+ * @return array slug => label
+ */
+function ayed_contact_interests() {
+	return array(
+		'volunteering' => __( 'Volunteering', 'ayed-ghana' ),
+		'partnership'  => __( 'Partnership', 'ayed-ghana' ),
+		'donating'     => __( 'Donating', 'ayed-ghana' ),
+		'programmes'   => __( 'Learning more about programmes', 'ayed-ghana' ),
+		'media'        => __( 'Media or press enquiry', 'ayed-ghana' ),
+		'other'        => __( 'Other', 'ayed-ghana' ),
+	);
+}
+
+/**
+ * Contact page URL, optionally with an interest preselected via query param.
+ *
+ * @param string $interest Interest slug from ayed_contact_interests().
+ * @return string
+ */
+function ayed_contact_url_for( $interest = '' ) {
+	$url = ayed_contact_url();
+	if ( $interest && 0 === strpos( $url, 'http' ) ) {
+		$url = add_query_arg( 'interest', rawurlencode( $interest ), $url );
+	}
+	return $url;
+}
+
+/**
  * Default navigation items used when no menu is assigned to the primary location.
  *
  * @return array List of items with 'url' and 'label'.

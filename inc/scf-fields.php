@@ -188,9 +188,10 @@ function ayed_register_field_groups() {
 			array( 'key' => 'field_involved_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'involved_title', 'type' => 'text', 'default_value' => 'Be Part of the [em]Movement[/em]', 'wrapper' => array( 'width' => 50 ) ),
 			array( 'key' => 'field_involved_cards', 'label' => __( 'Cards', 'ayed-ghana' ), 'name' => 'involved_cards', 'type' => 'repeater', 'layout' => 'block', 'button_label' => __( 'Add Card', 'ayed-ghana' ), 'sub_fields' => array(
 				array( 'key' => 'field_iv_icon', 'label' => __( 'Icon', 'ayed-ghana' ), 'name' => 'icon', 'type' => 'select', 'choices' => $icon_choices, 'wrapper' => array( 'width' => 25 ) ),
-				array( 'key' => 'field_iv_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text', 'wrapper' => array( 'width' => 35 ) ),
-				array( 'key' => 'field_iv_link_label', 'label' => __( 'Link Label', 'ayed-ghana' ), 'name' => 'link_label', 'type' => 'text', 'wrapper' => array( 'width' => 20 ) ),
-				array( 'key' => 'field_iv_link_url', 'label' => __( 'Link URL', 'ayed-ghana' ), 'name' => 'link_url', 'type' => 'text', 'wrapper' => array( 'width' => 20 ) ),
+				array( 'key' => 'field_iv_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text', 'wrapper' => array( 'width' => 40 ) ),
+				array( 'key' => 'field_iv_link_label', 'label' => __( 'Link Label', 'ayed-ghana' ), 'name' => 'link_label', 'type' => 'text', 'wrapper' => array( 'width' => 35 ) ),
+				array( 'key' => 'field_iv_interest', 'label' => __( 'Preselect Interest', 'ayed-ghana' ), 'name' => 'interest', 'type' => 'select', 'allow_null' => 1, 'choices' => ayed_contact_interests(), 'instructions' => __( 'Links the card to the contact form with this interest preselected.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
+				array( 'key' => 'field_iv_link_url', 'label' => __( 'Custom Link URL (optional)', 'ayed-ghana' ), 'name' => 'link_url', 'type' => 'text', 'instructions' => __( 'Overrides the contact link, for example an external donation page.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
 				array( 'key' => 'field_iv_text', 'label' => __( 'Text', 'ayed-ghana' ), 'name' => 'text', 'type' => 'textarea', 'rows' => 3 ),
 			) ),
 		),
