@@ -20,5 +20,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
 
           script: |
-            cd ~/ayedghana.org/wp-content/themes/ayed-ghana
-            git pull origin prod
+            rsync -avz --delete \
+              -e "ssh -p ${{ secrets.SERVER_PORT }}" \
+              ./ wp-user@SERVER_IP:~/ayedghana.org/wp-content/themes/ayed-ghana
