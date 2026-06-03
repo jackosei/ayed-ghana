@@ -17,7 +17,7 @@
 		initMobileNav();
 		initReveal();
 		initBackToTop();
-		initContactForm();
+		initAjaxForms();
 	});
 
 	/* Sticky header shadow on scroll. */
@@ -96,66 +96,65 @@
 		});
 	}
 
-	/* AJAX contact form. */
-	function initContactForm() {
-		var form = document.querySelector("[data-contact-form]");
-		if (!form || typeof window.ayedData === "undefined") {
+	/* Secure AJAX forms (contact, application). Each form carries its own hidden
+	   action and nonce inputs, so this handler is generic. */
+	function initAjaxForms() {
+		if (typeof window.ayedData === "undefined") {
 			return;
 		}
-		var status = form.querySelector(".form-status");
-		var submit = form.querySelector(".form-submit");
-		var defaultLabel = submit ? submit.textContent : "";
+		var forms = document.querySelectorAll("[data-ajax-form]");
+		Array.prototype.forEach.call(forms, function (form) {
+			var status = form.querySelector(".form-status");
+			var submit = form.querySelector(".form-submit");
+			var defaultLabel = submit ? submit.textContent : "";
 
-		form.addEventListener("submit", function (e) {
-			e.preventDefault();
+			form.addEventListener("submit", function (e) {
+				e.preventDefault();
 
-			if (!form.checkValidity()) {
-				form.reportValidity();
-				return;
-			}
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
 
-			setStatus("", "");
-			if (submit) {
-				submit.disabled = true;
-				submit.textContent = window.ayedData.sending;
-			}
+				setStatus(status, "", "");
+				if (submit) {
+					submit.disabled = true;
+					submit.textContent = window.ayedData.sending;
+				}
 
-			var data = new FormData(form);
-			data.append("action", "ayed_contact");
-			data.append("nonce", window.ayedData.nonce);
-
-			fetch(window.ayedData.ajaxUrl, {
-				method: "POST",
-				credentials: "same-origin",
-				body: data
-			})
-				.then(function (res) { return res.json().then(function (json) { return { ok: res.ok, json: json }; }); })
-				.then(function (result) {
-					var message = result.json && result.json.data && result.json.data.message;
-					if (result.json && result.json.success) {
-						setStatus(message || window.ayedData.sent, "is-success");
-						form.reset();
-					} else {
-						setStatus(message || window.ayedData.error, "is-error");
-					}
+				fetch(window.ayedData.ajaxUrl, {
+					method: "POST",
+					credentials: "same-origin",
+					body: new FormData(form)
 				})
-				.catch(function () {
-					setStatus(window.ayedData.error, "is-error");
-				})
-				.finally(function () {
-					if (submit) {
-						submit.disabled = false;
-						submit.textContent = defaultLabel;
-					}
-				});
+					.then(function (res) { return res.json().then(function (json) { return { ok: res.ok, json: json }; }); })
+					.then(function (result) {
+						var message = result.json && result.json.data && result.json.data.message;
+						if (result.json && result.json.success) {
+							setStatus(status, message || window.ayedData.sent, "is-success");
+							form.reset();
+						} else {
+							setStatus(status, message || window.ayedData.error, "is-error");
+						}
+					})
+					.catch(function () {
+						setStatus(status, window.ayedData.error, "is-error");
+					})
+					.finally(function () {
+						if (submit) {
+							submit.disabled = false;
+							submit.textContent = defaultLabel;
+						}
+					});
+			});
 		});
+	}
 
-		function setStatus(text, cls) {
-			if (!status) {
-				return;
-			}
-			status.textContent = text;
-			status.className = "form-status" + (cls ? " " + cls : "");
+	function setStatus(el, text, cls) {
+		if (!el) {
+			return;
 		}
+		el.textContent = text;
+		el.className = "form-status" + (cls ? " " + cls : "");
 	}
 })();

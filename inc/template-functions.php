@@ -221,6 +221,43 @@ function ayed_contact_url() {
 }
 
 /**
+ * Resolve the URL of the dedicated About page.
+ *
+ * Looks for a page using the About template, then a page with the slug
+ * "about". Falls back to the homepage About section anchor.
+ *
+ * @return string
+ */
+function ayed_about_url() {
+	static $url = null;
+	if ( null !== $url ) {
+		return $url;
+	}
+
+	$pages = get_posts( array(
+		'post_type'      => 'page',
+		'posts_per_page' => 1,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+		'meta_key'       => '_wp_page_template',
+		'meta_value'     => 'template-about.php',
+	) );
+	if ( ! empty( $pages ) ) {
+		$url = get_permalink( $pages[0] );
+		return $url;
+	}
+
+	$page = get_page_by_path( 'about' );
+	if ( $page ) {
+		$url = get_permalink( $page );
+		return $url;
+	}
+
+	$url = is_front_page() ? '#about' : home_url( '/#about' );
+	return $url;
+}
+
+/**
  * Canonical list of contact form interests, keyed by slug.
  *
  * Used by the contact form select, the "Get Involved" links (for query-param
@@ -254,23 +291,105 @@ function ayed_contact_url_for( $interest = '' ) {
 }
 
 /**
+ * Resolve the URL of the dedicated Apply page, optionally preselecting a program.
+ *
+ * @param int $program_id Optional program post ID to preselect via query param.
+ * @return string
+ */
+function ayed_apply_url( $program_id = 0 ) {
+	static $base = null;
+	if ( null === $base ) {
+		$pages = get_posts( array(
+			'post_type'      => 'page',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'meta_key'       => '_wp_page_template',
+			'meta_value'     => 'template-apply.php',
+		) );
+		if ( ! empty( $pages ) ) {
+			$base = get_permalink( $pages[0] );
+		} else {
+			$page = get_page_by_path( 'apply' );
+			$base = $page ? get_permalink( $page ) : '';
+		}
+	}
+
+	// Fall back to the contact page if no Apply page exists yet.
+	$url = $base ? $base : ayed_contact_url();
+
+	if ( $program_id && 0 === strpos( $url, 'http' ) ) {
+		$slug = get_post_field( 'post_name', $program_id );
+		if ( $slug ) {
+			$url = add_query_arg( 'program', rawurlencode( $slug ), $url );
+		}
+	}
+	return $url;
+}
+
+/**
+ * Whether a given program is currently accepting applications.
+ *
+ * Driven by the per-program "Accepting Applications" toggle.
+ *
+ * @param int $program_id Program post ID.
+ * @return bool
+ */
+function ayed_program_accepting( $program_id ) {
+	return $program_id && (bool) ayed_field( 'accepting_applications', false, $program_id );
+}
+
+/**
+ * The contextual Apply button label and link for a given program.
+ *
+ * The URL always preselects this program on the application form, so the
+ * applicant never has to choose it manually and never sees the wrong program.
+ *
+ * @param int $program_id Program post ID.
+ * @return array|null { label, url } or null when the program is not accepting applications.
+ */
+function ayed_program_apply( $program_id ) {
+	if ( ! ayed_program_accepting( $program_id ) ) {
+		return null;
+	}
+	$label = ayed_field( 'apply_label', __( 'Apply Now', 'ayed-ghana' ), $program_id );
+	$url   = ayed_field( 'apply_url', '', $program_id );
+	if ( ! $url ) {
+		$url = ayed_apply_url( $program_id );
+	}
+	return array( 'label' => $label, 'url' => $url );
+}
+
+/**
+ * Age brackets offered on the application form.
+ *
+ * @return array slug => label
+ */
+function ayed_age_brackets() {
+	return array(
+		'under-18' => __( 'Under 18', 'ayed-ghana' ),
+		'18-24'    => __( '18 to 24', 'ayed-ghana' ),
+		'25-30'    => __( '25 to 30', 'ayed-ghana' ),
+		'31-35'    => __( '31 to 35', 'ayed-ghana' ),
+		'over-35'  => __( 'Over 35', 'ayed-ghana' ),
+	);
+}
+
+/**
  * Default navigation items used when no menu is assigned to the primary location.
  *
  * @return array List of items with 'url' and 'label'.
  */
 function ayed_fallback_nav_items() {
+	// Home, About, Programs, Events, Get Involved. Contact is the header CTA
+	// button (rendered separately), not an inline link.
 	$items = array(
-		array( 'url' => is_front_page() ? '#about' : home_url( '/#about' ), 'label' => __( 'About', 'ayed-ghana' ) ),
+		array( 'url' => home_url( '/' ), 'label' => __( 'Home', 'ayed-ghana' ) ),
+		array( 'url' => ayed_about_url(), 'label' => __( 'About', 'ayed-ghana' ) ),
 		array( 'url' => get_post_type_archive_link( 'program' ), 'label' => __( 'Programs', 'ayed-ghana' ) ),
 		array( 'url' => get_post_type_archive_link( 'event' ), 'label' => __( 'Events', 'ayed-ghana' ) ),
+		array( 'url' => is_front_page() ? '#involved' : home_url( '/#involved' ), 'label' => __( 'Get Involved', 'ayed-ghana' ) ),
 	);
-
-	$news = (int) get_option( 'page_for_posts' );
-	if ( $news ) {
-		$items[] = array( 'url' => get_permalink( $news ), 'label' => get_the_title( $news ) );
-	}
-
-	$items[] = array( 'url' => ayed_contact_url(), 'label' => __( 'Contact', 'ayed-ghana' ) );
 
 	// Drop any items whose URL could not be resolved.
 	return array_values( array_filter( $items, static function ( $item ) {

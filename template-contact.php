@@ -35,6 +35,17 @@ while ( have_posts() ) :
 					<?php endif; ?>
 
 					<?php get_template_part( 'template-parts/content/contact-info' ); ?>
+
+					<?php $ayed_apply = ayed_apply_url(); ?>
+					<?php if ( $ayed_apply && 0 === strpos( $ayed_apply, 'http' ) ) : ?>
+						<p class="contact-callout">
+							<?php ayed_icon( 'graduation', array( 'size' => 20 ) ); ?>
+							<span>
+								<?php esc_html_e( 'Applying to a programme?', 'ayed-ghana' ); ?>
+								<a href="<?php echo esc_url( $ayed_apply ); ?>"><?php esc_html_e( 'Use the application form', 'ayed-ghana' ); ?></a>
+							</span>
+						</p>
+					<?php endif; ?>
 				</div>
 
 				<div class="contact-form-wrap">

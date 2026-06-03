@@ -16,6 +16,7 @@ while ( have_posts() ) :
 
 	$is_program = ( 'program' === get_post_type() );
 	$eyebrow    = $is_program ? ayed_field( 'program_label', __( 'Program', 'ayed-ghana' ), get_the_ID() ) : get_the_date();
+	$apply      = $is_program ? ayed_program_apply( get_the_ID() ) : null;
 
 	get_template_part( 'template-parts/content/page-header', null, array(
 		'eyebrow'  => $eyebrow,
@@ -41,12 +42,32 @@ while ( have_posts() ) :
 			</div>
 
 			<?php
+			// Contextual application CTA: Heading -> Description -> this block.
+			// Only programs render it; the per-program toggle decides Apply vs Closed.
 			$external = $is_program ? ayed_field( 'program_external', '', get_the_ID() ) : '';
-			if ( $external ) :
+			if ( $is_program ) :
 				?>
-				<p class="single-content__cta">
-					<a class="btn btn--primary" href="<?php echo esc_url( $external ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Visit Program Site', 'ayed-ghana' ); ?></a>
-				</p>
+				<div class="program-cta<?php echo $apply ? '' : ' program-cta--closed'; ?>">
+					<div class="program-cta__text">
+						<?php if ( $apply ) : ?>
+							<h2 class="program-cta__title"><?php esc_html_e( 'Ready to join this programme?', 'ayed-ghana' ); ?></h2>
+							<p class="program-cta__note"><?php esc_html_e( 'Applications are open. Apply now and our team will be in touch.', 'ayed-ghana' ); ?></p>
+						<?php else : ?>
+							<h2 class="program-cta__title"><?php esc_html_e( 'Applications Closed', 'ayed-ghana' ); ?></h2>
+							<p class="program-cta__note"><?php esc_html_e( 'This programme is not accepting applications right now. Please check back soon.', 'ayed-ghana' ); ?></p>
+						<?php endif; ?>
+					</div>
+					<div class="program-cta__actions">
+						<?php if ( $apply ) : ?>
+							<a class="btn btn--primary" href="<?php echo esc_url( $apply['url'] ); ?>"><?php echo esc_html( $apply['label'] ); ?></a>
+						<?php else : ?>
+							<span class="program-cta__badge"><?php ayed_icon( 'close', array( 'size' => 16 ) ); ?><?php esc_html_e( 'Applications Closed', 'ayed-ghana' ); ?></span>
+						<?php endif; ?>
+						<?php if ( $external ) : ?>
+							<a class="btn btn--outline" href="<?php echo esc_url( $external ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Visit Program Site', 'ayed-ghana' ); ?></a>
+						<?php endif; ?>
+					</div>
+				</div>
 			<?php endif; ?>
 
 			<footer class="single-content__footer">

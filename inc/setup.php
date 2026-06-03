@@ -154,6 +154,70 @@ function ayed_maybe_flush_rewrites() {
 add_action( 'init', 'ayed_maybe_flush_rewrites', 99 );
 
 /**
+ * Ensure the core "About", "Contact" and "Apply" pages exist and use their
+ * templates, so the navigation and CTAs always resolve to a real page. Runs once
+ * per provisioning version; pages the site owner creates or deletes are respected.
+ */
+function ayed_provision_pages() {
+	$provision_version = '2';
+	if ( get_option( 'ayed_pages_provisioned' ) === $provision_version ) {
+		return;
+	}
+
+	$pages = array(
+		'about'   => array(
+			'title'    => __( 'About Us', 'ayed-ghana' ),
+			'template' => 'template-about.php',
+			'content'  => '<p>AYED Ghana is a non-governmental organisation dedicated to empowering the youth of Ghana and Africa. We build human potential by giving young people the tools, networks, and opportunities they need to shape their own futures.</p>',
+		),
+		'contact' => array(
+			'title'    => __( 'Contact', 'ayed-ghana' ),
+			'template' => 'template-contact.php',
+			'content'  => '<p>Whether you want to learn more about our programmes, explore a partnership, or simply connect with our team, reach out and we will respond promptly.</p>',
+		),
+		'apply'   => array(
+			'title'    => __( 'Apply', 'ayed-ghana' ),
+			'template' => 'template-apply.php',
+			'content'  => '',
+		),
+	);
+
+	foreach ( $pages as $slug => $data ) {
+		// Skip if a page with this slug or this template already exists.
+		$existing = get_page_by_path( $slug );
+		if ( $existing ) {
+			continue;
+		}
+		$by_template = get_posts( array(
+			'post_type'      => 'page',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'post_status'    => 'any',
+			'meta_key'       => '_wp_page_template',
+			'meta_value'     => $data['template'],
+		) );
+		if ( ! empty( $by_template ) ) {
+			continue;
+		}
+
+		$page_id = wp_insert_post( array(
+			'post_title'   => $data['title'],
+			'post_name'    => $slug,
+			'post_content' => $data['content'],
+			'post_status'  => 'publish',
+			'post_type'    => 'page',
+		) );
+		if ( $page_id && ! is_wp_error( $page_id ) ) {
+			update_post_meta( $page_id, '_wp_page_template', $data['template'] );
+		}
+	}
+
+	update_option( 'ayed_pages_provisioned', $provision_version );
+}
+add_action( 'admin_init', 'ayed_provision_pages' );
+
+/**
  * Create the dedicated Contact page once, assigned to the Contact template,
  * so the navigation link always resolves to a real page.
  */

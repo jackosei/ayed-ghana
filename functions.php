@@ -30,6 +30,7 @@ $ayed_includes = array(
 	'inc/template-functions.php', // Helpers used across templates.
 	'inc/seo.php',                // Meta tags, Open Graph and JSON-LD schema.
 	'inc/contact.php',            // Secure AJAX contact form handler.
+	'inc/apply.php',              // Secure AJAX programme application handler.
 );
 
 foreach ( $ayed_includes as $ayed_file ) {

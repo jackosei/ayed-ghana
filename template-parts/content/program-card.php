@@ -20,6 +20,7 @@ if ( ! $summary ) {
 }
 $link = $external ? $external : get_permalink();
 $ext_attr = $external ? ' target="_blank" rel="noopener noreferrer"' : '';
+$apply = ayed_program_apply( get_the_ID() );
 ?>
 <article <?php post_class( 'program-card' ); ?>>
 	<a class="program-card__media program-card__media--<?php echo esc_attr( $color ); ?>" href="<?php echo esc_url( $link ); ?>"<?php echo $ext_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> tabindex="-1" aria-hidden="true">
@@ -27,6 +28,9 @@ $ext_attr = $external ? ' target="_blank" rel="noopener noreferrer"' : '';
 			<?php the_post_thumbnail( 'ayed-card', array( 'loading' => 'lazy', 'class' => 'program-card__img' ) ); ?>
 		<?php else : ?>
 			<span class="program-card__glyph"><?php ayed_icon( $icon, array( 'size' => 56 ) ); ?></span>
+		<?php endif; ?>
+		<?php if ( $apply ) : ?>
+			<span class="program-card__badge"><?php esc_html_e( 'Applications open', 'ayed-ghana' ); ?></span>
 		<?php endif; ?>
 	</a>
 	<div class="program-card__body">

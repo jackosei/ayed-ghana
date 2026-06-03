@@ -10,11 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html class="no-js" <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="profile" href="https://gmpg.org/xfn/11" />
+	<script>document.documentElement.className = document.documentElement.className.replace( /\bno-js\b/, 'js' );</script>
 	<?php wp_head(); ?>
 </head>
 
@@ -50,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		</nav>
 
 		<div class="site-header__cta">
-			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( is_front_page() ? '#involved' : home_url( '/#involved' ) ); ?>"><?php esc_html_e( 'Get Involved', 'ayed-ghana' ); ?></a>
+			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( ayed_contact_url() ); ?>"><?php esc_html_e( 'Contact', 'ayed-ghana' ); ?></a>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'ayed-ghana' ); ?>" data-nav-toggle>
 				<?php ayed_icon( 'menu', array( 'size' => 26, 'class' => 'nav-toggle__open' ) ); ?>
 				<?php ayed_icon( 'close', array( 'size' => 26, 'class' => 'nav-toggle__close' ) ); ?>

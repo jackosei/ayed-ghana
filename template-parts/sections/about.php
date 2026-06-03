@@ -30,6 +30,14 @@ $stats = ayed_field( 'about_stats', array(
 		<div class="about-grid">
 			<div class="about-grid__text">
 				<?php echo wp_kses_post( $body ); ?>
+				<?php
+				$ayed_about_url = ayed_about_url();
+				if ( $ayed_about_url && false === strpos( $ayed_about_url, '#about' ) ) :
+					?>
+					<p class="about-grid__cta">
+						<a class="btn btn--outline" href="<?php echo esc_url( $ayed_about_url ); ?>"><?php esc_html_e( 'More About Us', 'ayed-ghana' ); ?></a>
+					</p>
+				<?php endif; ?>
 			</div>
 
 			<div class="about-grid__visual">

@@ -90,6 +90,9 @@ function ayed_register_field_groups() {
 			array( 'key' => 'field_contact_website', 'label' => __( 'Display Website', 'ayed-ghana' ), 'name' => 'contact_website', 'type' => 'text', 'default_value' => 'ayedghana.org', 'wrapper' => array( 'width' => 50 ) ),
 			array( 'key' => 'field_contact_recipient', 'label' => __( 'Form Recipient Email', 'ayed-ghana' ), 'name' => 'contact_recipient', 'type' => 'email', 'instructions' => __( 'Where contact form submissions are delivered. Defaults to the site admin email if blank.', 'ayed-ghana' ) ),
 
+			array( 'key' => 'tab_applications', 'label' => __( 'Applications', 'ayed-ghana' ), 'type' => 'tab' ),
+			array( 'key' => 'field_applications_recipient', 'label' => __( 'Applications Recipient Email', 'ayed-ghana' ), 'name' => 'applications_recipient', 'type' => 'email', 'instructions' => __( 'Where programme application submissions are delivered. Defaults to the contact recipient if blank. Turn applications on or off per programme under each Program.', 'ayed-ghana' ) ),
+
 			array( 'key' => 'tab_social', 'label' => __( 'Social', 'ayed-ghana' ), 'type' => 'tab' ),
 			array( 'key' => 'field_social_links', 'label' => __( 'Social Links', 'ayed-ghana' ), 'name' => 'social_links', 'type' => 'repeater', 'layout' => 'table', 'button_label' => __( 'Add Social Link', 'ayed-ghana' ), 'sub_fields' => array(
 				array( 'key' => 'field_social_network', 'label' => __( 'Network', 'ayed-ghana' ), 'name' => 'network', 'type' => 'select', 'choices' => array(
@@ -144,6 +147,44 @@ function ayed_register_field_groups() {
 				array( 'key' => 'field_stat_label', 'label' => __( 'Label', 'ayed-ghana' ), 'name' => 'label', 'type' => 'text' ),
 			) ),
 
+			/* Programs */
+			array( 'key' => 'tab_programs', 'label' => __( 'Programs', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
+			array( 'key' => 'field_programs_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'programs_tag', 'type' => 'text', 'default_value' => 'Featured Initiatives', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_programs_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'programs_title', 'type' => 'text', 'default_value' => 'Programs Shaping [em]Ghana\'s Future[/em]', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_programs_source', 'label' => __( 'Featured Programs', 'ayed-ghana' ), 'name' => 'featured_programs', 'type' => 'relationship', 'post_type' => array( 'program' ), 'filters' => array( 'search' ), 'max' => 6, 'return_format' => 'id', 'instructions' => __( 'Select up to six programs. If empty, the most recent programs are shown.', 'ayed-ghana' ) ),
+
+			/* Get Involved */
+			array( 'key' => 'tab_involved', 'label' => __( 'Get Involved', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
+			array( 'key' => 'field_involved_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'involved_tag', 'type' => 'text', 'default_value' => 'Join Us', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_involved_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'involved_title', 'type' => 'text', 'default_value' => 'Be Part of the [em]Movement[/em]', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_involved_cards', 'label' => __( 'Cards', 'ayed-ghana' ), 'name' => 'involved_cards', 'type' => 'repeater', 'layout' => 'block', 'button_label' => __( 'Add Card', 'ayed-ghana' ), 'sub_fields' => array(
+				array( 'key' => 'field_iv_icon', 'label' => __( 'Icon', 'ayed-ghana' ), 'name' => 'icon', 'type' => 'select', 'choices' => $icon_choices, 'wrapper' => array( 'width' => 25 ) ),
+				array( 'key' => 'field_iv_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text', 'wrapper' => array( 'width' => 40 ) ),
+				array( 'key' => 'field_iv_link_label', 'label' => __( 'Link Label', 'ayed-ghana' ), 'name' => 'link_label', 'type' => 'text', 'wrapper' => array( 'width' => 35 ) ),
+				array( 'key' => 'field_iv_interest', 'label' => __( 'Preselect Interest', 'ayed-ghana' ), 'name' => 'interest', 'type' => 'select', 'allow_null' => 1, 'choices' => ayed_contact_interests(), 'instructions' => __( 'Links the card to the contact form with this interest preselected.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
+				array( 'key' => 'field_iv_link_url', 'label' => __( 'Custom Link URL (optional)', 'ayed-ghana' ), 'name' => 'link_url', 'type' => 'text', 'instructions' => __( 'Overrides the contact link, for example an external donation page.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
+				array( 'key' => 'field_iv_text', 'label' => __( 'Text', 'ayed-ghana' ), 'name' => 'text', 'type' => 'textarea', 'rows' => 3 ),
+			) ),
+		),
+	) );
+
+	/* ---------------------------------------------------------------------
+	 * 2b. About Page sections (moved off the homepage).
+	 * ------------------------------------------------------------------- */
+	acf_add_local_field_group( array(
+		'key'      => 'group_ayed_about',
+		'title'    => __( 'About Page Content', 'ayed-ghana' ),
+		'location' => array(
+			array(
+				array( 'param' => 'page_template', 'operator' => '==', 'value' => 'template-about.php' ),
+			),
+		),
+		'menu_order'     => 1,
+		'position'       => 'normal',
+		'style'          => 'default',
+		'hide_on_screen' => array(),
+		'fields'   => array(
+
 			/* Mission / Vision / Values */
 			array( 'key' => 'tab_mission', 'label' => __( 'Mission', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
 			array( 'key' => 'field_mission_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'mission_tag', 'type' => 'text', 'default_value' => 'Our Foundation', 'wrapper' => array( 'width' => 50 ) ),
@@ -175,25 +216,6 @@ function ayed_register_field_groups() {
 				array( 'key' => 'field_ap_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text', 'wrapper' => array( 'width' => 40 ) ),
 				array( 'key' => 'field_ap_text', 'label' => __( 'Text', 'ayed-ghana' ), 'name' => 'text', 'type' => 'textarea', 'rows' => 2, 'wrapper' => array( 'width' => 60 ) ),
 			) ),
-
-			/* Programs */
-			array( 'key' => 'tab_programs', 'label' => __( 'Programs', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
-			array( 'key' => 'field_programs_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'programs_tag', 'type' => 'text', 'default_value' => 'Featured Initiatives', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_programs_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'programs_title', 'type' => 'text', 'default_value' => 'Programs Shaping [em]Ghana\'s Future[/em]', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_programs_source', 'label' => __( 'Featured Programs', 'ayed-ghana' ), 'name' => 'featured_programs', 'type' => 'relationship', 'post_type' => array( 'program' ), 'filters' => array( 'search' ), 'max' => 6, 'return_format' => 'id', 'instructions' => __( 'Select up to six programs. If empty, the most recent programs are shown.', 'ayed-ghana' ) ),
-
-			/* Get Involved */
-			array( 'key' => 'tab_involved', 'label' => __( 'Get Involved', 'ayed-ghana' ), 'type' => 'tab', 'placement' => 'left' ),
-			array( 'key' => 'field_involved_tag', 'label' => __( 'Eyebrow', 'ayed-ghana' ), 'name' => 'involved_tag', 'type' => 'text', 'default_value' => 'Join Us', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_involved_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'involved_title', 'type' => 'text', 'default_value' => 'Be Part of the [em]Movement[/em]', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_involved_cards', 'label' => __( 'Cards', 'ayed-ghana' ), 'name' => 'involved_cards', 'type' => 'repeater', 'layout' => 'block', 'button_label' => __( 'Add Card', 'ayed-ghana' ), 'sub_fields' => array(
-				array( 'key' => 'field_iv_icon', 'label' => __( 'Icon', 'ayed-ghana' ), 'name' => 'icon', 'type' => 'select', 'choices' => $icon_choices, 'wrapper' => array( 'width' => 25 ) ),
-				array( 'key' => 'field_iv_title', 'label' => __( 'Title', 'ayed-ghana' ), 'name' => 'title', 'type' => 'text', 'wrapper' => array( 'width' => 40 ) ),
-				array( 'key' => 'field_iv_link_label', 'label' => __( 'Link Label', 'ayed-ghana' ), 'name' => 'link_label', 'type' => 'text', 'wrapper' => array( 'width' => 35 ) ),
-				array( 'key' => 'field_iv_interest', 'label' => __( 'Preselect Interest', 'ayed-ghana' ), 'name' => 'interest', 'type' => 'select', 'allow_null' => 1, 'choices' => ayed_contact_interests(), 'instructions' => __( 'Links the card to the contact form with this interest preselected.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
-				array( 'key' => 'field_iv_link_url', 'label' => __( 'Custom Link URL (optional)', 'ayed-ghana' ), 'name' => 'link_url', 'type' => 'text', 'instructions' => __( 'Overrides the contact link, for example an external donation page.', 'ayed-ghana' ), 'wrapper' => array( 'width' => 50 ) ),
-				array( 'key' => 'field_iv_text', 'label' => __( 'Text', 'ayed-ghana' ), 'name' => 'text', 'type' => 'textarea', 'rows' => 3 ),
-			) ),
 		),
 	) );
 
@@ -218,6 +240,11 @@ function ayed_register_field_groups() {
 				'teal'   => __( 'Teal', 'ayed-ghana' ),
 			), 'default_value' => 'navy', 'wrapper' => array( 'width' => 50 ) ),
 			array( 'key' => 'field_prog_external', 'label' => __( 'External Link (optional)', 'ayed-ghana' ), 'name' => 'program_external', 'type' => 'url', 'wrapper' => array( 'width' => 50 ) ),
+
+			array( 'key' => 'field_prog_apply_msg', 'label' => __( 'Applications', 'ayed-ghana' ), 'type' => 'message', 'message' => __( 'When "Accepting Applications" is on, this program shows a contextual "Apply Now" button that opens the application form with this program preselected. When off, the program page shows an "Applications Closed" state instead.', 'ayed-ghana' ) ),
+			array( 'key' => 'field_prog_apply_enabled', 'label' => __( 'Accepting Applications', 'ayed-ghana' ), 'name' => 'accepting_applications', 'type' => 'true_false', 'ui' => 1, 'default_value' => 0, 'instructions' => __( 'Turn on while this program is open to applicants.', 'ayed-ghana' ) ),
+			array( 'key' => 'field_prog_apply_label', 'label' => __( 'Apply Button Label', 'ayed-ghana' ), 'name' => 'apply_label', 'type' => 'text', 'default_value' => 'Apply Now', 'conditional_logic' => array( array( array( 'field' => 'field_prog_apply_enabled', 'operator' => '==', 'value' => '1' ) ) ), 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_prog_apply_url', 'label' => __( 'Apply Link Override (optional)', 'ayed-ghana' ), 'name' => 'apply_url', 'type' => 'url', 'instructions' => __( 'Leave blank to use the on-site Apply page with this program preselected.', 'ayed-ghana' ), 'conditional_logic' => array( array( array( 'field' => 'field_prog_apply_enabled', 'operator' => '==', 'value' => '1' ) ) ), 'wrapper' => array( 'width' => 50 ) ),
 		),
 	) );
 

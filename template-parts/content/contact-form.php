@@ -9,7 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-<form class="contact-form" data-contact-form novalidate>
+<form class="contact-form" data-ajax-form novalidate>
+	<input type="hidden" name="action" value="ayed_contact" />
+	<?php wp_nonce_field( 'ayed_contact_nonce', 'nonce', false ); ?>
 	<div class="form-row">
 		<p class="form-field">
 			<label for="cf-first"><?php esc_html_e( 'First Name', 'ayed-ghana' ); ?> <span aria-hidden="true">*</span></label>
