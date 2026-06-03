@@ -10,9 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $ayed_blurb   = ayed_setting( 'footer_blurb', 'A non-governmental organisation dedicated to empowering the youth of Ghana and Africa.' );
-$ayed_email   = ayed_setting( 'contact_email', 'info@ayedghana.com' );
+$ayed_email   = ayed_setting( 'contact_email', 'info@ayedghana.org' );
 $ayed_phone   = ayed_setting( 'contact_phone', '' );
-$ayed_address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
+$ayed_address = ayed_setting( 'contact_address', 'C170/5, Adenkum Road, Accra, Ghana' );
 ?>
 </main><!-- #main -->
 

@@ -84,10 +84,10 @@ function ayed_register_field_groups() {
 			array( 'key' => 'field_show_site_title', 'label' => __( 'Show site name beside logo', 'ayed-ghana' ), 'name' => 'show_site_title', 'type' => 'true_false', 'ui' => 1, 'default_value' => 1, 'instructions' => __( 'When a logo is uploaded, show the "AYED Ghana" wordmark next to it. Turn off to show the logo alone.', 'ayed-ghana' ) ),
 
 			array( 'key' => 'tab_contact', 'label' => __( 'Contact', 'ayed-ghana' ), 'type' => 'tab' ),
-			array( 'key' => 'field_contact_email', 'label' => __( 'Email Address', 'ayed-ghana' ), 'name' => 'contact_email', 'type' => 'email', 'default_value' => 'info@ayedghana.com', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_contact_email', 'label' => __( 'Email Address', 'ayed-ghana' ), 'name' => 'contact_email', 'type' => 'email', 'default_value' => 'info@ayedghana.org', 'wrapper' => array( 'width' => 50 ) ),
 			array( 'key' => 'field_contact_phone', 'label' => __( 'Phone Number', 'ayed-ghana' ), 'name' => 'contact_phone', 'type' => 'text', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_contact_address', 'label' => __( 'Address', 'ayed-ghana' ), 'name' => 'contact_address', 'type' => 'text', 'default_value' => 'Accra, Ghana, West Africa', 'wrapper' => array( 'width' => 50 ) ),
-			array( 'key' => 'field_contact_website', 'label' => __( 'Display Website', 'ayed-ghana' ), 'name' => 'contact_website', 'type' => 'text', 'default_value' => 'ayedghana.com', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_contact_address', 'label' => __( 'Address', 'ayed-ghana' ), 'name' => 'contact_address', 'type' => 'text', 'default_value' => 'C170/5, Adenkum Road, Accra, Ghana', 'wrapper' => array( 'width' => 50 ) ),
+			array( 'key' => 'field_contact_website', 'label' => __( 'Display Website', 'ayed-ghana' ), 'name' => 'contact_website', 'type' => 'text', 'default_value' => 'ayedghana.org', 'wrapper' => array( 'width' => 50 ) ),
 			array( 'key' => 'field_contact_recipient', 'label' => __( 'Form Recipient Email', 'ayed-ghana' ), 'name' => 'contact_recipient', 'type' => 'email', 'instructions' => __( 'Where contact form submissions are delivered. Defaults to the site admin email if blank.', 'ayed-ghana' ) ),
 
 			array( 'key' => 'tab_social', 'label' => __( 'Social', 'ayed-ghana' ), 'type' => 'tab' ),

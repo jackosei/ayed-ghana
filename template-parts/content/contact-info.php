@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$email   = ayed_setting( 'contact_email', 'info@ayedghana.com' );
+$email   = ayed_setting( 'contact_email', 'info@ayedghana.org' );
 $phone   = ayed_setting( 'contact_phone', '' );
-$address = ayed_setting( 'contact_address', 'Accra, Ghana, West Africa' );
-$website = ayed_setting( 'contact_website', 'ayedghana.com' );
+$address = ayed_setting( 'contact_address', 'C170/5, Adenkum Road, Accra, Ghana' );
+$website = ayed_setting( 'contact_website', 'ayedghana.org' );
 ?>
 <ul class="contact-info__list">
 	<?php if ( $website ) : ?>
